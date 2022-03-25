@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
+#include <errno.h>
+
 
 int printStr(FILE *inputFile, FILE *outputFile)
 {
@@ -23,7 +26,32 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    int groupSize = atoi(argv[2]);
+    
+    char *str, *endptr;
+    long val;
+    str = argv[2];
+    //       base = (argc > 2) ? atoi(argv[2]) : 10;
+
+           errno = 0;    /* To distinguish success/failure after call */
+           val = strtol(str, &endptr, 0);
+
+           /* Check for various possible errors */
+
+           if ((errno == ERANGE && (val == LONG_MAX || val == LONG_MIN))
+                   || (errno != 0 && val == 0)) {
+               perror("strtol");
+               exit(EXIT_FAILURE);
+           }
+
+           if (endptr == str) {
+               fprintf(stderr, "No digits were found\n");
+               exit(EXIT_FAILURE);
+           }
+
+    int groupSize = val;
+    
+    
+    
     if (groupSize < 0) {
         fprintf(stderr, "You entered wrong group size. It should be >=0\n");
         return -1;
@@ -34,7 +62,7 @@ int main(int argc, char *argv[])
         return -2;
     }
 
-    int eof = 42;
+    int eof = 1;
     int counter;
     while (eof != EOF) {
         counter = 0;
