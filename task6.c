@@ -23,9 +23,8 @@ int printDir(const char *dirname)
 
 int main()
 {
-    int errorCode = 0;
-    errorCode |= printDir("./");
-    errorCode |= printDir("/");
+    printDir("./");
+    printDir("/");
 
-    return errorCode;
+    return 0;
 }
