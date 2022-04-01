@@ -38,7 +38,7 @@ int printDirInfo(char *dirname, FILE *file)
             continue;
         }
         if (S_ISDIR(stats.st_mode))
-            error |= printDirInfo(dirname, file);
+             printDirInfo(dirname, file);
         else {
             size += stats.st_size;
             ++filesCount;
